@@ -1,0 +1,35 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: setup users and configure sudo
+    import_role:
+      name: "jonathanio.users"
+    vars:
+      user_users:
+      - name: fred
+        fullname: Fredie Crueger
+        createhome: yes
+        shell: /bin/bash
+        groups:
+          - docker
+        ssh_keys:
+          - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICn2jLmrDKYwt1zouEjyAwdItBJ2A2MyULwLr1IbF5rz
+            comment: desktop
+      - name: mark
+        fullname: Mark Zuckerberg
+        createhome: yes
+        shell: /bin/zsh
+        groups:
+          - docker
+        ssh_keys:
+          - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQh0DIHOIs4ZBok6F8I2JmZGcdu6NPS8R7cY5ndQaID
+            comment: laptop
+      - name: adam
+        fullname: Adam (Eve's husband)
+        createhome: yes
+        shell: /bin/sh
+        groups:
+          - docker
+        ssh_keys:
+          - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPY89d+z8ZjNPuqNUJ/Ny3X4PxDGz1LAWzSeMWBD1iwG
+            comment: apple watch

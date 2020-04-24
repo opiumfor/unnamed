@@ -1,0 +1,29 @@
+---
+#TODO nginx should be inside Docker. But I had no time)
+- hosts: "web"
+  become: true
+  roles:
+    - role: nginxinc.nginx
+  vars:
+    nginx_http_template_enable: true
+    nginx_http_template:
+      default:
+        template_file: http/default.conf.j2
+        conf_file_name: default.conf
+        conf_file_location: /etc/nginx/conf.d/
+        servers:
+          server1:
+            listen:
+              listen_localhost:
+                # ip: 0.0.0.0
+                port: 80
+            server_name: localhost
+            error_page: /usr/share/nginx/html
+            autoindex: false
+            web_server:
+              locations:
+                default:
+                  location: /
+                  return: 200 "Hello {{ inventory_host_name }}"
+                  autoindex: false
+              http_demo_conf: false

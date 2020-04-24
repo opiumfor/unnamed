@@ -1,0 +1,8 @@
+.DS_Store
+.venv
+.env
+.ssh
+*.retry
+.vendor_roles/*
+!.vendor_roles/.gitkeep
+inventory/local/*

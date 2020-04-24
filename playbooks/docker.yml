@@ -1,0 +1,48 @@
+- name: Install docker to all hosts
+  hosts: "all"
+  become: yes
+  tasks:
+    - name: Installs pip3
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
+      register: apt_res
+      retries: 5
+      until: apt_res is success
+    - name: Install setuptools by pip
+      pip:
+        name: setuptools
+      register: pip_install_setuptools
+      retries: 5
+      until: pip_install_setuptools is success
+    - name: install docker libraries
+      register: packageInstalled
+      until: packageInstalled is success
+      retries: 5
+      delay: 2
+      pip:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - pip
+        - docker
+        - docker-compose
+      tags:
+        - fix-docker-libs
+    - name: Install compose by pip
+      pip:
+        name: docker-compose
+      register: pip_install_compose
+      retries: 5
+      until: pip_install_compose is success
+    - import_role:
+        name: "nickjj.docker"
+      vars:
+        docker__edition: "ce"
+        docker__state: "present"
+        docker__version: "19.03.4"
+        docker__users: ["www", "pys"]
+        docker__install_docker_compose: true
+        docker__compose_version: "1.24.1"
+        docker__daemon_json: '"dns": ["8.8.8.8", "8.8.4.4"], "live-restore": true'

@@ -1,0 +1,23 @@
+stages:
+  - lint
+
+lint ansible files:
+  stage: lint
+  image: python:2.7.15-stretch
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    ANSIBLE_CONFIG: "./ansible.cfg"
+  cache:
+    paths:
+      - .cache/pip
+  tags:
+    - staging
+  before_script:
+    - apt-get install gcc
+    - pip install --upgrade -r requirements.txt
+    - ansible-galaxy install -r ./.ansible-galaxy.yaml
+    - ansible --version
+    - ansible-lint --version
+  script:
+    - ansible-lint --exclude=./.vendor_roles/ -x 204 **/*.yml
+    - find playbooks -type f -not -path "playbooks/roles/*" \( -name "*.yml" -o -name "*.yaml" \) | xargs -L 1  ansible-playbook --inventory inventory --syntax-check
