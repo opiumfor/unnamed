@@ -28,5 +28,5 @@ ruamel.ordereddict==0.4.14
 ruamel.yaml==0.16.5
 ruamel.yaml.clib==0.2.0
 six==1.11.0
-urllib3==1.24.1
+urllib3==1.24.2
 websocket-client==0.56.0
