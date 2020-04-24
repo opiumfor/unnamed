@@ -2,6 +2,7 @@
 .venv
 .env
 .ssh
+.idea/
 *.retry
 .vendor_roles/*
 !.vendor_roles/.gitkeep
